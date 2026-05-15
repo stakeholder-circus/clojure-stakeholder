@@ -1,26 +1,24 @@
 {
-  description = "clojure-stakeholder scaffold";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+  description = "clojure-stakeholder deterministic tranche";
+
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+
   outputs = { self, nixpkgs }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forAllSystems = f: builtins.listToAttrs (map (system: { name = system; value = f system; }) systems);
+      system = "aarch64-darwin";
+      pkgs = import nixpkgs { inherit system; };
     in {
-      packages = forAllSystems (system:
-        let pkgs = import nixpkgs { inherit system; };
-        in {
-          check = pkgs.writeShellApplication {
-            name = "check";
-            runtimeInputs = [ pkgs.python3 ];
-            text = ''
-              python3 scripts/validate_scaffold.py
-            '';
-          };
-          default = self.packages.${system}.check;
-        });
-      apps = forAllSystems (system: {
-        check = { type = "app"; program = "${self.packages.${system}.check}/bin/check"; };
-        default = self.apps.${system}.check;
-      });
+      devShells.${system}.default = pkgs.mkShell {
+        packages = [ pkgs.clojure pkgs.temurin-jre-bin ];
+      };
+      apps.${system}.check = {
+        type = "app";
+        program = toString (pkgs.writeShellScript "check" ''
+          set -euo pipefail
+          cd ${self}
+          python3 scripts/validate_scaffold.py
+          clojure -M:test
+        '');
+      };
     };
 }

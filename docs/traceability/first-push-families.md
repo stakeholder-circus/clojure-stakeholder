@@ -1,13 +1,22 @@
-    # First-push families for clojure-stakeholder
+# First push families
 
-    - `code_analyzer`: pending first-push traceability row for clojure-stakeholder.
-- `data_processing`: pending first-push traceability row for clojure-stakeholder.
-- `jargon`: pending first-push traceability row for clojure-stakeholder.
-- `metrics`: pending first-push traceability row for clojure-stakeholder.
-- `network_activity`: pending first-push traceability row for clojure-stakeholder.
-- `system_monitoring`: pending first-push traceability row for clojure-stakeholder.
-- `agent_workflows`: pending first-push traceability row for clojure-stakeholder.
-- `platform_engineering`: pending first-push traceability row for clojure-stakeholder.
-- `observability_ai_runtime`: pending first-push traceability row for clojure-stakeholder.
-- `delivery_preview_ops`: pending first-push traceability row for clojure-stakeholder.
-- `supply_chain_security`: pending first-push traceability row for clojure-stakeholder.
+## Dedicated classic-six
+- `code_analyzer`
+- `data_processing`
+- `jargon`
+- `metrics`
+- `network_activity`
+- `system_monitoring`
+
+## Dedicated modern-core
+- `agent_workflows`
+- `platform_engineering`
+- `observability_ai_runtime`
+- `delivery_preview_ops`
+- `supply_chain_security`
+
+## Fallback groups
+- `ai_governance`
+- `security_blockchain`
+- `overlay_quantum`
+- `health_protocol`

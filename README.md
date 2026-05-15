@@ -1,34 +1,22 @@
-> [!WARNING]
-> This repository is AI-assisted and manually reviewed. It is currently a local-only scaffold in the next-20 autonomous sprint.
-
 # clojure-stakeholder
 
-Clojure scaffold under stakeholder-circus.
+Publication-held local rewrite repo for the Clojure tranche in the stakeholder parity program.
 
-## Status
-- Selected for the next-20 autonomous sprint.
-- Local-only scaffold; no upstream tracking and no publication yet.
-- Default branch remains `main`; active work happens on the repo-specific baseline branch.
+## Current tranche
+- full deterministic `classic-six + modern-core`
+- grouped fallback coverage for later generator families
+- native + Docker validation
+- `--list-values`, deterministic same-seed JSON, and explicit `--experimental-provider` fail-fast
 
-## Role
-- Deterministic full-parity target for the next-20 wave.
-- First tranche target is `classic-six + modern-core` with grouped fallback for later families.
-- Full live-provider/runtime support remains a required follow-on wave.
+## Toolchain
+- host runtime: Homebrew Clojure CLI `1.12.4.1618`
+- JSON encoder: Cheshire
+- tests: `clojure.test`
+- Docker gate: Temurin 21 + official Clojure install script
 
-## Planned toolchain contract
-- Toolchain source: `brew`
-- See [docs/toolchain.md](docs/toolchain.md) for exact prep commands.
-
-## Current guardrail
-- Missing behavior must fail fast and be recorded in `GAPS.md`.
-- The scaffold baseline is authoritative until implementation starts.
-- Requires a Brew install before implementation.
-
-## Documentation
-- [STATUS.md](STATUS.md)
-- [PARITY.md](PARITY.md)
-- [GAPS.md](GAPS.md)
-- [docs/remotes.md](docs/remotes.md)
-- [docs/provenance.md](docs/provenance.md)
-- [docs/toolchain.md](docs/toolchain.md)
-- [docs/traceability/first-push-families.md](docs/traceability/first-push-families.md)
+## Commands
+- `python3 scripts/validate_scaffold.py`
+- `clojure -M:test`
+- `clojure -M -m stakeholder.core --list-values`
+- `clojure -M -m stakeholder.core --output-format json --focus-family code_analyzer --seed 123`
+- `docker build -t clojure-stakeholder .`
