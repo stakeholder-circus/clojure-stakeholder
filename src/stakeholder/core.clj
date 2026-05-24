@@ -106,7 +106,12 @@
 
 (defn -main [& args]
   (let [{:keys [exit-code stdout stderr]} (run args)]
-    (when (seq stdout) (print stdout))
-    (when (seq stderr) (binding [*out* *err*] (print stderr)))
+    (when (seq stdout)
+      (print stdout)
+      (flush))
+    (when (seq stderr)
+      (binding [*out* *err*]
+        (print stderr)
+        (flush)))
     (shutdown-agents)
     (System/exit exit-code)))
