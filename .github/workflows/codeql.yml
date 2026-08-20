@@ -1,4 +1,4 @@
-name: codeql
+name: sast
 
 on:
   push:
@@ -10,8 +10,12 @@ permissions:
   contents: read
 
 jobs:
-  note:
+  clj-kondo:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "CodeQL has no selected first-class Clojure analysis lane in this repo; native and Docker workflows are authoritative."
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+      - name: Run Clojure static analysis
+        run: nix develop --command clj-kondo --lint src test
