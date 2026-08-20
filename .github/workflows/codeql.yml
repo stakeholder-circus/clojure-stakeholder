@@ -2,6 +2,7 @@ name: sast
 
 on:
   push:
+    branches: [main]
   pull_request:
   schedule:
     - cron: '19 3 * * 1'
