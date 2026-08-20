@@ -5,20 +5,33 @@
 
   outputs = { self, nixpkgs }:
     let
-      system = "aarch64-darwin";
-      pkgs = import nixpkgs { inherit system; };
+      systems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+      pkgsFor = system: import nixpkgs { inherit system; };
     in {
-      devShells.${system}.default = pkgs.mkShell {
-        packages = [ pkgs.clojure pkgs.temurin-jre-bin ];
-      };
-      apps.${system}.check = {
-        type = "app";
-        program = toString (pkgs.writeShellScript "check" ''
-          set -euo pipefail
-          cd ${self}
-          python3 scripts/validate_scaffold.py
-          clojure -M:test
-        '');
-      };
+      devShells = forAllSystems (system:
+        let pkgs = pkgsFor system;
+        in {
+          default = pkgs.mkShell {
+            packages = [ pkgs.clojure pkgs.clj-kondo pkgs.python3 pkgs.temurin-jre-bin ];
+          };
+        });
+      apps = forAllSystems (system:
+        let pkgs = pkgsFor system;
+        in {
+          check = {
+            type = "app";
+            program = "${pkgs.writeShellApplication {
+              name = "check";
+              runtimeInputs = [ pkgs.clojure pkgs.clj-kondo pkgs.python3 pkgs.temurin-jre-bin ];
+              text = ''
+                cd ${self}
+                python3 scripts/validate_scaffold.py
+                clj-kondo --lint src test
+                clojure -M:test
+              '';
+            }}/bin/check";
+          };
+        });
     };
 }
