@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:25-jdk AS build
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl rlwrap ca-certificates \
     && rm -rf /var/lib/apt/lists/*
@@ -13,7 +13,7 @@ COPY src ./src
 COPY test ./test
 RUN clojure -M:test
 
-FROM eclipse-temurin:21-jdk
+FROM eclipse-temurin:25-jdk
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl rlwrap ca-certificates \
     && rm -rf /var/lib/apt/lists/*
